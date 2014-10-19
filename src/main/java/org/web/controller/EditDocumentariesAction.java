@@ -26,6 +26,7 @@ public class EditDocumentariesAction extends ActionSupport implements
 	private DocumentaryManager documentaryManager;
 
 	private Documentary documentary;
+	private String idString = "";
 	private List<Documentary> documentaries;
 
 	public String listDocumentaries() {
@@ -37,6 +38,14 @@ public class EditDocumentariesAction extends ActionSupport implements
 	public String addDocumentary() {
 		LOG.info("Saving documentary: " + documentary);
 		documentaryManager.saveOrUpdate(documentary);
+		return SUCCESS;
+	}
+	
+	public String deleteDocumentary() {
+		LOG.info("Delete documentary with id: " + idString);
+		int id = Integer.parseInt(idString);
+		System.out.println(id);
+		documentaryManager.delete(id);
 		return SUCCESS;
 	}
 
@@ -59,4 +68,11 @@ public class EditDocumentariesAction extends ActionSupport implements
 		this.documentaries = documentaries;
 	}
 
+	public String getIdString() {
+		return idString;
+	}
+
+	public void setIdString(String idString) {
+		this.idString = idString;
+	}
 }

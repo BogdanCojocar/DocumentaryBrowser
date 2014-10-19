@@ -20,6 +20,10 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 	public void saveOrUpdate(Documentary doc) {
 		documentaryDAO.saveOrUpdate(doc);
 	}
+	
+	public void delete(int id) {
+		documentaryDAO.delete(id);
+	}
 
 	public List<Documentary> getAllDocumentaries() {
 		return documentaryDAO.getAllDocumentaries();

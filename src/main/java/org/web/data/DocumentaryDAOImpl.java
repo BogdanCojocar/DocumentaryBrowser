@@ -16,10 +16,18 @@ public class DocumentaryDAOImpl implements DocumentaryDAO {
 		sessionFactory.getCurrentSession().save(doc);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Documentary> getAllDocumentaries() {
-		return sessionFactory.getCurrentSession().createQuery("FROM Documentary")
-				.list();
+	public void delete(int id) {
+		Documentary doc = (Documentary) sessionFactory.getCurrentSession()
+				.load(Documentary.class, id);
+
+		if (doc != null) {
+			sessionFactory.getCurrentSession().delete(doc);
+		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<Documentary> getAllDocumentaries() {
+		return sessionFactory.getCurrentSession()
+				.createQuery("FROM Documentary").list();
+	}
 }

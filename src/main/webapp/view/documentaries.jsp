@@ -52,10 +52,10 @@ table.list, table.list td, table.list th {
 	</s:form>
 	
 	<h3>Remove documentary</h3>
-	<s:form method="post" action="">
+	<s:form method="post" action="remove">
 		<table>
 			<tr>
-				<td><s:textfield key="Id" name="documentary.id" /></td>
+				<td><s:textfield key="Id" name="idString" /></td>
 			</tr>
 			<tr>
 				<td><s:submit key="remove"></s:submit></td>

@@ -15,6 +15,9 @@
 		<action name="add" class="editDocumentariesAction" method="addDocumentary">
 			<result type="redirect">/list</result>
 		</action>
+		<action name="remove" class="editDocumentariesAction" method="deleteDocumentary">
+			<result type="redirect">/list</result>
+		</action>
 		<action name="*" class="editDocumentariesAction" method="listDocumentaries">
 			<result>/view/documentaries.jsp</result>
 		</action>
