@@ -51,8 +51,7 @@ table.list, table.list td, table.list th {
 				<td><form:input path="category" /></td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center"><input type="submit"
-					value="Submit" /></td>
+				<td colspan="2"><input type="submit" value="Submit" /></td>
 			</tr>
 		</table>
 	</form:form>
@@ -65,8 +64,7 @@ table.list, table.list td, table.list th {
 				<td><form:input path="id" /></td>
 			</tr>
 			<tr>
-				<td colspan="2" align="center"><input type="submit"
-					value="Submit" /></td>
+				<td colspan="2"><input type="submit" value="Submit" /></td>
 			</tr>
 		</table>
 	</form:form>
