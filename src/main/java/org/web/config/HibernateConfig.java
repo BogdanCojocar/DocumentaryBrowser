@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan({ "org.web.data", "org.web.controller"})
+@ComponentScan({ "org.web.data", "org.web.service"})
 @ImportResource({ "classpath:hibernateConfig.xml" })
 public class HibernateConfig {
 }

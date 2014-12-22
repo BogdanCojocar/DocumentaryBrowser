@@ -48,5 +48,5 @@ public class TestPersistence {
 		documentaryList = documentaryManager.getAllDocumentaries();
 		assertThat(documentaryList.contains(doc), is(false));
 	}
-
 }
+
