@@ -71,7 +71,7 @@ public class DocumentaryBrowserController {
 
 	@RequestMapping(value = REMOVE_DOCUMENTARY, method = RequestMethod.POST)
 	public String removeDocumentary(Model model,
-			@Valid @ModelAttribute(DOCUMENTARY) Documentary doc,
+			@ModelAttribute(DOCUMENTARY) Documentary doc,
 			final BindingResult result) {
 
 		log.info("Accessing removeDocumentary method. Documentary object is: "

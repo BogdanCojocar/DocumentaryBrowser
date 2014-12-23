@@ -20,10 +20,10 @@ public class Documentary {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Size(min = MIN_SIZE, max = MAX_SIZE)
+	@Size(min = MIN_SIZE, max = MAX_SIZE, message = "{Size.documentary.name}")
 	private String name;
 
-	@Size(min = MIN_SIZE, max = MAX_SIZE)
+	@Size(min = MIN_SIZE, max = MAX_SIZE, message = "{Size.documentary.category}")
 	private String category;
 
 	public int getId() {
