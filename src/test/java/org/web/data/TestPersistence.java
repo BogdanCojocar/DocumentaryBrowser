@@ -31,7 +31,7 @@ public class TestPersistence {
 		doc.setName(DOCUMENTARY_NAME);
 		doc.setCategory(DOCUMENTARY_CATEGORY);
 
-		documentaryManager.saveOrUpdate(doc);
+		documentaryManager.saveOrUpdateDocumentary(doc);
 
 		List<Documentary> documentaryList = documentaryManager
 				.getAllDocumentaries();
@@ -42,7 +42,7 @@ public class TestPersistence {
 		for (Documentary d : documentaryList) {
 			if (d.getName().equals(doc.getName())
 					&& d.getCategory().equals(doc.getCategory())) {
-				documentaryManager.delete(d.getId());
+				documentaryManager.deleteDocumentary(d.getId());
 			}
 		}
 		documentaryList = documentaryManager.getAllDocumentaries();

@@ -31,7 +31,8 @@ table.list, table.list td, table.list th {
 			<c:forEach items="${documentaries}" var="doc">
 				<tr>
 					<td>${doc.id}</td>
-					<td>${doc.name}</td>
+					<c:url value="/documentary/${doc.name}" var="link" />
+					<td><a href="${link}">${doc.name}</a></td>
 					<td>${doc.category}</td>
 				</tr>
 			</c:forEach>

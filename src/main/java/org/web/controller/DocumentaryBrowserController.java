@@ -10,9 +10,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.web.data.Documentary;
+import org.web.data.DocumentaryInfo;
 import org.web.service.DocumentaryManager;
 
 @Controller
@@ -24,7 +26,13 @@ public class DocumentaryBrowserController {
 	private final static String HOME_PAGE = "index";
 	private final static String HOME_PAGE_REDIRECT = "redirect:/index";
 	private final static String ERROR_PAGE = "error";
+	private final static String DOCUMENTARY_PAGE = "documentary/{name}";
 	private final static String DOCUMENTARY = "documentary";
+	private final static String DOCUMENTARY_TITLE = "title";
+	private final static String DOCUMENTARY_IMG_PATH = "imgpath";
+	private final static String DOCUMENTARY_DESCRIPTION = "description";
+	private final static String DOCUMENTARY_VIDEO_LINK = "videolink";
+	private final static String DOCUMENTARY_RATING = "rating";
 	private final static String DOCUMENTARIES = "documentaries";
 	private final static String ADD_DOCUMENTARY = "add";
 	private final static String REMOVE_DOCUMENTARY = "remove";
@@ -65,7 +73,7 @@ public class DocumentaryBrowserController {
 			return ERROR_PAGE;
 		}
 
-		manager.saveOrUpdate(doc);
+		manager.saveOrUpdateDocumentary(doc);
 		return HOME_PAGE_REDIRECT;
 	}
 
@@ -76,7 +84,7 @@ public class DocumentaryBrowserController {
 
 		log.info("Accessing removeDocumentary method. Documentary object is: "
 				+ doc.toString());
-		
+
 		documentaryValidator.validate(doc, result);
 		if (result.hasErrors()) {
 			String errorMessage = result.getFieldError().getDefaultMessage();
@@ -85,8 +93,21 @@ public class DocumentaryBrowserController {
 			return ERROR_PAGE;
 		}
 
-		manager.delete(doc.getId());
+		manager.deleteDocumentary(doc.getId());
 		return HOME_PAGE_REDIRECT;
+	}
+
+	@RequestMapping(value = DOCUMENTARY_PAGE, method = RequestMethod.GET)
+	public String showDocumentary(Model model, @PathVariable String name) {
+
+		DocumentaryInfo docInfo = manager.getDocumentaryByTitle(name);
+		
+		model.addAttribute(DOCUMENTARY_TITLE, docInfo.getTitle());
+		model.addAttribute(DOCUMENTARY_IMG_PATH, docInfo.getImagePath());
+		model.addAttribute(DOCUMENTARY_DESCRIPTION, docInfo.getDescription());
+		model.addAttribute(DOCUMENTARY_VIDEO_LINK, docInfo.getVideoLink());
+		model.addAttribute(DOCUMENTARY_RATING, docInfo.getRating());
+		return DOCUMENTARY;
 	}
 
 }

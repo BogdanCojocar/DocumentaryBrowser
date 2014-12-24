@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface DocumentaryDAO {
 	
-	public void saveOrUpdate(Documentary doc);
-	public void delete(int id);
-	public List<Documentary> getAllDocumentaries();
+	void saveOrUpdate(Documentary doc);
+	void delete(int id);
+	List<Documentary> getAllDocumentaries();
 }

@@ -1,5 +1,6 @@
 package org.web.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.web.data.Documentary;
 import org.web.data.DocumentaryDAO;
+import org.web.data.DocumentaryInfo;
+import org.web.data.DocumentaryInfoDAO;
 
 @Service
 @Transactional
@@ -22,11 +25,16 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 	@Autowired
 	private DocumentaryDAO documentaryDAO;
 
-	public void saveOrUpdate(Documentary doc) {
+	@Autowired
+	private DocumentaryInfoDAO documentaryInfoDAO;
+
+	@Override
+	public void saveOrUpdateDocumentary(Documentary doc) {
 		documentaryDAO.saveOrUpdate(doc);
 	}
 
-	public void delete(int id) {
+	@Override
+	public void deleteDocumentary(int id) {
 		try {
 			documentaryDAO.delete(id);
 		} catch (HibernateObjectRetrievalFailureException e) {
@@ -34,8 +42,23 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 		}
 	}
 
+	@Override
 	public List<Documentary> getAllDocumentaries() {
-		return documentaryDAO.getAllDocumentaries();
+		try {
+			return documentaryDAO.getAllDocumentaries();
+		} catch (HibernateObjectRetrievalFailureException e) {
+			log.error("Invalid data: ", e);
+			return new ArrayList<Documentary>();
+		}
 	}
 
+	@Override
+	public DocumentaryInfo getDocumentaryByTitle(String title) {
+		try {
+			return documentaryInfoDAO.getDocumentaryInfoByTitle(title);
+		} catch (IndexOutOfBoundsException e) {
+			log.error("Title not found");
+			return new DocumentaryInfo();
+		}
+	}
 }
