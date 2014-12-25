@@ -22,6 +22,8 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 	private final static Logger log = Logger
 			.getLogger(DocumentaryManagerImpl.class.getName());
 
+	private final static String EMPTY_STRING = "";
+
 	@Autowired
 	private DocumentaryDAO documentaryDAO;
 
@@ -60,5 +62,18 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 			log.error("Title not found");
 			return new DocumentaryInfo();
 		}
+	}
+	
+	@Override
+	public boolean checkIfDocumentaryIsEmpty(DocumentaryInfo docInfo) {
+		boolean isEmpty = true;
+
+		if (!docInfo.getTitle().equals(EMPTY_STRING)
+				|| !docInfo.getDescription().equals(EMPTY_STRING)
+				|| !docInfo.getImagePath().equals(EMPTY_STRING)
+				|| !docInfo.getVideoLink().equals(EMPTY_STRING)
+				|| docInfo.getRating() != 0) {
+		}
+		return isEmpty;
 	}
 }

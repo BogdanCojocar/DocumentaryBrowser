@@ -11,5 +11,6 @@ public interface DocumentaryManager {
 	void deleteDocumentary(int id);
 	List<Documentary> getAllDocumentaries();
 	DocumentaryInfo  getDocumentaryByTitle(String title);
+	boolean checkIfDocumentaryIsEmpty(DocumentaryInfo docInfo);
 
 }

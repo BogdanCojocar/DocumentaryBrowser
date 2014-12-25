@@ -101,7 +101,14 @@ public class DocumentaryBrowserController {
 	public String showDocumentary(Model model, @PathVariable String name) {
 
 		DocumentaryInfo docInfo = manager.getDocumentaryByTitle(name);
-		
+
+		if (manager.checkIfDocumentaryIsEmpty(docInfo)) {
+			model.addAttribute(MESSAGE, "Documentary is not in the list");
+			return ERROR_PAGE;
+		}
+
+		log.info("Showing info for documentary: " + docInfo.toString());
+
 		model.addAttribute(DOCUMENTARY_TITLE, docInfo.getTitle());
 		model.addAttribute(DOCUMENTARY_IMG_PATH, docInfo.getImagePath());
 		model.addAttribute(DOCUMENTARY_DESCRIPTION, docInfo.getDescription());
