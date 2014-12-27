@@ -11,26 +11,36 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "info")
 public class DocumentaryInfo {
 
+	private final static int MIN_SIZE_TITLE = 5;
+	private final static int MAX_SIZE_TITLE = 40;
+	private final static int MIN_SIZE_DESCRIPTION = 1000;
+	private final static int MIN_SIZE_PATH = 5;
+
 	@Id
+	@Size(min = MIN_SIZE_TITLE, max = MAX_SIZE_TITLE, message = "{Size.documentaryInfo.title}")
 	private String title;
 
 	@Lob
+	@Size(min = MIN_SIZE_DESCRIPTION, message = "{Size.documentaryInfo.description}")
 	private String description;
-	
-	@Column(name="imagepath")
+
+	@Column(name = "imagepath")
+	@Size(min = MIN_SIZE_PATH, message = "{Size.documentaryInfo.imagePath}")
 	private String imagePath;
+
 	private int rating;
-	
-	@Column(name="videolink")
+
+	@Column(name = "videolink")
 	private String videoLink;
-	
+
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="id")
+	@JoinColumn(name = "id")
 	private List<Comment> comments;
 
 	public String getTitle() {

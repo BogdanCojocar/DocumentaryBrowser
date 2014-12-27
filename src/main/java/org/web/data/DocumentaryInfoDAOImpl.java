@@ -21,4 +21,9 @@ public class DocumentaryInfoDAOImpl implements DocumentaryInfoDAO {
 		return (DocumentaryInfo) query.list().get(0);
 	}
 
+	@Override
+	public void saveAndUpdate(DocumentaryInfo docInfo) {
+		sessionFactory.getCurrentSession().save(docInfo);
+	}
+
 }

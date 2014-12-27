@@ -22,8 +22,6 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 	private final static Logger log = Logger
 			.getLogger(DocumentaryManagerImpl.class.getName());
 
-	private final static String EMPTY_STRING = "";
-
 	@Autowired
 	private DocumentaryDAO documentaryDAO;
 
@@ -33,6 +31,11 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 	@Override
 	public void saveOrUpdateDocumentary(Documentary doc) {
 		documentaryDAO.saveOrUpdate(doc);
+	}
+
+	@Override
+	public void saveOrUpdateDocumentaryInfo(DocumentaryInfo docInfo) {
+		documentaryInfoDAO.saveAndUpdate(docInfo);
 	}
 
 	@Override
@@ -63,16 +66,15 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 			return new DocumentaryInfo();
 		}
 	}
-	
+
 	@Override
-	public boolean checkIfDocumentaryIsEmpty(DocumentaryInfo docInfo) {
+	public boolean checkIfDocumentaryInfoIsEmpty(DocumentaryInfo docInfo) {
 		boolean isEmpty = true;
 
-		if (!docInfo.getTitle().equals(EMPTY_STRING)
-				|| !docInfo.getDescription().equals(EMPTY_STRING)
-				|| !docInfo.getImagePath().equals(EMPTY_STRING)
-				|| !docInfo.getVideoLink().equals(EMPTY_STRING)
-				|| docInfo.getRating() != 0) {
+		if (docInfo.getTitle() != null || docInfo.getDescription() != null
+				|| docInfo.getImagePath() != null
+				|| docInfo.getVideoLink() != null || docInfo.getRating() != 0) {
+			isEmpty = false;
 		}
 		return isEmpty;
 	}

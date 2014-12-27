@@ -12,18 +12,20 @@ import javax.validation.constraints.Size;
 @Table(name = "documentaries")
 public class Documentary {
 
-	private final static int MIN_SIZE = 5;
-	private final static int MAX_SIZE = 40;
+	private final static int MIN_SIZE_NAME = 5;
+	private final static int MAX_SIZE_NAME = 40;
+	private final static int MIN_SIZE_CATEGORY = 2;
+	private final static int MAX_SIZE_CATEGORY = 10;
 
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 
-	@Size(min = MIN_SIZE, max = MAX_SIZE, message = "{Size.documentary.name}")
+	@Size(min = MIN_SIZE_NAME, max = MAX_SIZE_NAME, message = "{Size.documentary.name}")
 	private String name;
 
-	@Size(min = MIN_SIZE, max = MAX_SIZE, message = "{Size.documentary.category}")
+	@Size(min = MIN_SIZE_CATEGORY, max = MAX_SIZE_CATEGORY, message = "{Size.documentary.category}")
 	private String category;
 
 	public int getId() {

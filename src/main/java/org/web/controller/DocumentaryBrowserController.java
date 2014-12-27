@@ -1,5 +1,8 @@
 package org.web.controller;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.web.data.Documentary;
 import org.web.data.DocumentaryInfo;
 import org.web.service.DocumentaryManager;
@@ -28,6 +33,7 @@ public class DocumentaryBrowserController {
 	private final static String ERROR_PAGE = "error";
 	private final static String DOCUMENTARY_PAGE = "documentary/{name}";
 	private final static String DOCUMENTARY = "documentary";
+	private final static String DOCUMENTARY_INFO = "documentaryInfo";
 	private final static String DOCUMENTARY_TITLE = "title";
 	private final static String DOCUMENTARY_IMG_PATH = "imgpath";
 	private final static String DOCUMENTARY_DESCRIPTION = "description";
@@ -35,8 +41,10 @@ public class DocumentaryBrowserController {
 	private final static String DOCUMENTARY_RATING = "rating";
 	private final static String DOCUMENTARIES = "documentaries";
 	private final static String ADD_DOCUMENTARY = "add";
+	private final static String ADD_DOCUMENTARY_INFO = "add_info";
 	private final static String REMOVE_DOCUMENTARY = "remove";
 	private final static String MESSAGE = "message";
+	private final static String IMAGE_FOLDER = "/home/bogdan/Downloads/";
 
 	@Autowired
 	private DocumentaryManager manager;
@@ -74,6 +82,48 @@ public class DocumentaryBrowserController {
 		}
 
 		manager.saveOrUpdateDocumentary(doc);
+
+		model.addAttribute(DOCUMENTARY_INFO, new DocumentaryInfo());
+		model.addAttribute(DOCUMENTARY_TITLE, doc.getName());
+		return DOCUMENTARY_INFO;
+	}
+
+	@RequestMapping(value = ADD_DOCUMENTARY_INFO, method = RequestMethod.POST)
+	public String postDocumentaryInfo(Model model,
+			@Valid @ModelAttribute(DOCUMENTARY_INFO) DocumentaryInfo docInfo,
+			@RequestParam(value = "image", required = true) MultipartFile file,
+			final BindingResult result) {
+		
+		documentaryValidator.validate(file, result);
+		String errorMessage;
+		if (result.hasErrors()) {
+			errorMessage = result.getFieldError().getDefaultMessage();
+			log.error(errorMessage);
+			model.addAttribute(MESSAGE, errorMessage);
+			return ERROR_PAGE;
+		}
+
+		String filePath = IMAGE_FOLDER + file.getOriginalFilename();
+		errorMessage = uploadFile(file, filePath);
+
+		if (!errorMessage.isEmpty()) {
+			log.error(errorMessage);
+			model.addAttribute(MESSAGE, errorMessage);
+			return ERROR_PAGE;
+		} else {
+			docInfo.setImagePath(filePath);
+		}
+
+		documentaryValidator.validate(docInfo, result);
+		if (result.hasErrors()) {
+			errorMessage = result.getFieldError().getDefaultMessage();
+			log.error(errorMessage);
+			model.addAttribute(MESSAGE, errorMessage);
+			return ERROR_PAGE;
+		}
+		System.out.println(docInfo.toString());
+		log.info("saving documentary info: " + docInfo.toString());
+		manager.saveOrUpdateDocumentaryInfo(docInfo);
 		return HOME_PAGE_REDIRECT;
 	}
 
@@ -102,8 +152,9 @@ public class DocumentaryBrowserController {
 
 		DocumentaryInfo docInfo = manager.getDocumentaryByTitle(name);
 
-		if (manager.checkIfDocumentaryIsEmpty(docInfo)) {
+		if (manager.checkIfDocumentaryInfoIsEmpty(docInfo)) {
 			model.addAttribute(MESSAGE, "Documentary is not in the list");
+			log.error("Documentary is not in the list");
 			return ERROR_PAGE;
 		}
 
@@ -115,6 +166,32 @@ public class DocumentaryBrowserController {
 		model.addAttribute(DOCUMENTARY_VIDEO_LINK, docInfo.getVideoLink());
 		model.addAttribute(DOCUMENTARY_RATING, docInfo.getRating());
 		return DOCUMENTARY;
+	}
+
+	private String uploadFile(MultipartFile file, String filePath) {
+		String errorMessage = "";
+
+		if (!file.isEmpty()) {
+			File storedFile = new File(filePath);
+			if (storedFile.exists() && !storedFile.isDirectory()) {
+				log.info("File " + filePath + "is already uploaded");
+			} else {
+				try {
+					byte[] bytes = file.getBytes();
+					BufferedOutputStream stream = new BufferedOutputStream(
+							new FileOutputStream(new File(filePath)));
+					stream.write(bytes);
+					stream.close();
+					log.info("Successfully uploaded " + filePath);
+				} catch (Exception e) {
+					errorMessage = "Failed to upload " + filePath + ": "
+							+ e.getMessage();
+				}
+			}
+		} else {
+			errorMessage = "File is empty";
+		}
+		return errorMessage;
 	}
 
 }
