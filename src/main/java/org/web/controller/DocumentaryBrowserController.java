@@ -52,7 +52,7 @@ public class DocumentaryBrowserController {
 	@Autowired
 	private DocumentaryValidator documentaryValidator;
 
-	@RequestMapping(value = HOME_PAGE, method = RequestMethod.GET)
+	@RequestMapping(value = { "/", HOME_PAGE }, method = RequestMethod.GET)
 	public String index(Model model) {
 
 		log.info("Accessing index method.");
@@ -93,7 +93,7 @@ public class DocumentaryBrowserController {
 			@Valid @ModelAttribute(DOCUMENTARY_INFO) DocumentaryInfo docInfo,
 			@RequestParam(value = "image", required = true) MultipartFile file,
 			final BindingResult result) {
-		
+
 		documentaryValidator.validate(file, result);
 		String errorMessage;
 		if (result.hasErrors()) {

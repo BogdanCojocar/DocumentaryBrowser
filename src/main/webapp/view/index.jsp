@@ -45,7 +45,7 @@ table.list, table.list td, table.list th {
 		<table>
 			<tr>
 				<td><form:label path="name">Name: </form:label></td>
-				<td><form:input path="name"/></td>
+				<td><form:input path="name" /></td>
 			</tr>
 			<tr>
 				<td><form:label path="category">Category: </form:label></td>
