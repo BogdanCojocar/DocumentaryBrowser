@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
@@ -15,7 +17,7 @@ import org.springframework.web.servlet.view.JstlView;
 @EnableTransactionManagement
 @ComponentScan("org.web")
 @Import({ SpringSecurityConfig.class })
-public class WebAppConfig {
+public class WebAppConfig extends WebMvcConfigurerAdapter {
 	
 	private static int MAX_IMAGE_SIZE = 1000000; 
 
@@ -33,6 +35,11 @@ public class WebAppConfig {
 		CommonsMultipartResolver multipartResolver = new CommonsMultipartResolver();
 		multipartResolver.setMaxUploadSize(MAX_IMAGE_SIZE);
 		return multipartResolver;
+	}
+	
+	@Override
+	public void addResourceHandlers(ResourceHandlerRegistry registry) {
+	    registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
 
 }

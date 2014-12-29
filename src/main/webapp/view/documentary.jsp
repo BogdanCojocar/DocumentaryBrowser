@@ -14,10 +14,11 @@
 	<h2>${title}</h2>
 	<br>
 	<br>
-	<img style="width: 150px; height: 125px;" src="${imgpath}" align="left"
-		hspace="5" vspace="10">
+	<img style="width: 150px; height: 125px;"
+		src="<c:url value="${imgpath}" />" align="left" hspace="5" vspace="10" />
 	<div>
 		<div>${description}</div>
+		<br> <br>
 		<div style="font-weight: bold;">
 			<a href="${videolink}"><big>Watch it!</big></a>
 		</div>

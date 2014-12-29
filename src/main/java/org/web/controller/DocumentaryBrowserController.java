@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.List;
 
+import javax.servlet.ServletContext;
 import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
@@ -44,13 +45,16 @@ public class DocumentaryBrowserController {
 	private final static String ADD_DOCUMENTARY_INFO = "add_info";
 	private final static String REMOVE_DOCUMENTARY = "remove";
 	private final static String MESSAGE = "message";
-	private final static String IMAGE_FOLDER = "/home/bogdan/Downloads/";
+	private final static String IMAGE_FOLDER = "/resources/images/";
 
 	@Autowired
 	private DocumentaryManager manager;
 
 	@Autowired
 	private DocumentaryValidator documentaryValidator;
+
+	@Autowired
+	private ServletContext servletContext;
 
 	@RequestMapping(value = { "/", HOME_PAGE }, method = RequestMethod.GET)
 	public String index(Model model) {
@@ -75,10 +79,8 @@ public class DocumentaryBrowserController {
 				+ doc.toString());
 
 		if (result.hasErrors()) {
-			String errorMessage = result.getFieldError().getDefaultMessage();
-			log.error(errorMessage);
-			model.addAttribute(MESSAGE, errorMessage);
-			return ERROR_PAGE;
+			return sendErrorMessage(result.getFieldError().getDefaultMessage(),
+					model);
 		}
 
 		manager.saveOrUpdateDocumentary(doc);
@@ -95,34 +97,27 @@ public class DocumentaryBrowserController {
 			final BindingResult result) {
 
 		documentaryValidator.validate(file, result);
-		String errorMessage;
 		if (result.hasErrors()) {
-			errorMessage = result.getFieldError().getDefaultMessage();
-			log.error(errorMessage);
-			model.addAttribute(MESSAGE, errorMessage);
-			return ERROR_PAGE;
+			return sendErrorMessage(result.getFieldError().getDefaultMessage(),
+					model);
 		}
 
-		String filePath = IMAGE_FOLDER + file.getOriginalFilename();
-		errorMessage = uploadFile(file, filePath);
+		String filePath = createFileUploadPath(file.getOriginalFilename());
+		String errorMessage = uploadFile(file, filePath);
 
 		if (!errorMessage.isEmpty()) {
-			log.error(errorMessage);
-			model.addAttribute(MESSAGE, errorMessage);
-			return ERROR_PAGE;
+			return sendErrorMessage(errorMessage, model);
 		} else {
-			docInfo.setImagePath(filePath);
+			docInfo.setImagePath(IMAGE_FOLDER + file.getOriginalFilename());
 		}
 
 		documentaryValidator.validate(docInfo, result);
 		if (result.hasErrors()) {
-			errorMessage = result.getFieldError().getDefaultMessage();
-			log.error(errorMessage);
-			model.addAttribute(MESSAGE, errorMessage);
-			return ERROR_PAGE;
+			return sendErrorMessage(result.getFieldError().getDefaultMessage(),
+					model);
 		}
-		System.out.println(docInfo.toString());
-		log.info("saving documentary info: " + docInfo.toString());
+
+		log.info("saving documentary info: " + docInfo.getTitle());
 		manager.saveOrUpdateDocumentaryInfo(docInfo);
 		return HOME_PAGE_REDIRECT;
 	}
@@ -137,10 +132,8 @@ public class DocumentaryBrowserController {
 
 		documentaryValidator.validate(doc, result);
 		if (result.hasErrors()) {
-			String errorMessage = result.getFieldError().getDefaultMessage();
-			log.error(errorMessage);
-			model.addAttribute(MESSAGE, errorMessage);
-			return ERROR_PAGE;
+			return sendErrorMessage(result.getFieldError().getDefaultMessage(),
+					model);
 		}
 
 		manager.deleteDocumentary(doc.getId());
@@ -153,12 +146,10 @@ public class DocumentaryBrowserController {
 		DocumentaryInfo docInfo = manager.getDocumentaryByTitle(name);
 
 		if (manager.checkIfDocumentaryInfoIsEmpty(docInfo)) {
-			model.addAttribute(MESSAGE, "Documentary is not in the list");
-			log.error("Documentary is not in the list");
-			return ERROR_PAGE;
+			return sendErrorMessage("Documentary is not in the list", model);
 		}
 
-		log.info("Showing info for documentary: " + docInfo.toString());
+		log.info("Showing info for documentary: " + docInfo.getTitle());
 
 		model.addAttribute(DOCUMENTARY_TITLE, docInfo.getTitle());
 		model.addAttribute(DOCUMENTARY_IMG_PATH, docInfo.getImagePath());
@@ -166,6 +157,14 @@ public class DocumentaryBrowserController {
 		model.addAttribute(DOCUMENTARY_VIDEO_LINK, docInfo.getVideoLink());
 		model.addAttribute(DOCUMENTARY_RATING, docInfo.getRating());
 		return DOCUMENTARY;
+	}
+
+	private String createFileUploadPath(String originalFileName) {
+		String webappRoot = servletContext.getRealPath("/");
+		StringBuilder filePathBuilder = new StringBuilder(webappRoot);
+		filePathBuilder.append(IMAGE_FOLDER);
+		filePathBuilder.append(originalFileName);
+		return filePathBuilder.toString();
 	}
 
 	private String uploadFile(MultipartFile file, String filePath) {
@@ -194,4 +193,9 @@ public class DocumentaryBrowserController {
 		return errorMessage;
 	}
 
+	private String sendErrorMessage(String errorMessage, Model model) {
+		log.error(errorMessage);
+		model.addAttribute(MESSAGE, errorMessage);
+		return ERROR_PAGE;
+	}
 }
