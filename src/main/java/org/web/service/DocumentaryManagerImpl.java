@@ -9,6 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.orm.hibernate4.HibernateObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.web.data.Comment;
 import org.web.data.Documentary;
 import org.web.data.DocumentaryDAO;
 import org.web.data.DocumentaryInfo;
@@ -65,6 +66,15 @@ public class DocumentaryManagerImpl implements DocumentaryManager {
 			log.error("Title not found");
 			return new DocumentaryInfo();
 		}
+	}
+	
+	@Override
+	public void addComment(Comment comment, String documentaryTitle) {
+		DocumentaryInfo docInfo = getDocumentaryByTitle(documentaryTitle);
+		List<Comment> comments = docInfo.getComments();
+		comments.add(comment);
+		docInfo.setComments(comments);
+		saveOrUpdateDocumentaryInfo(docInfo);
 	}
 
 	@Override

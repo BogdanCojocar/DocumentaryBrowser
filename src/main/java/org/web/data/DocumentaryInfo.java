@@ -39,8 +39,8 @@ public class DocumentaryInfo {
 	@Column(name = "videolink")
 	private String videoLink;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "id")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "documentary_title")
 	private List<Comment> comments;
 
 	public String getTitle() {
@@ -83,11 +83,12 @@ public class DocumentaryInfo {
 		this.videoLink = videoLink;
 	}
 
-	@Override
-	public String toString() {
-		return "DocumentaryInfo [title=" + title + ", description="
-				+ description + ", imagePath=" + imagePath + ", rating="
-				+ rating + ", videoLink=" + videoLink + "]";
+	public List<Comment> getComments() {
+		return comments;
+	}
+
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 
 }

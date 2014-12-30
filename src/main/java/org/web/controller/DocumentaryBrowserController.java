@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.web.data.Comment;
 import org.web.data.Documentary;
 import org.web.data.DocumentaryInfo;
 import org.web.service.DocumentaryManager;
@@ -34,15 +35,19 @@ public class DocumentaryBrowserController {
 	private final static String ERROR_PAGE = "error";
 	private final static String DOCUMENTARY_PAGE = "documentary/{name}";
 	private final static String DOCUMENTARY = "documentary";
+	private final static String DOCUMENTARY_REDIRECT = "redirect:/documentary/";
 	private final static String DOCUMENTARY_INFO = "documentaryInfo";
 	private final static String DOCUMENTARY_TITLE = "title";
 	private final static String DOCUMENTARY_IMG_PATH = "imgpath";
 	private final static String DOCUMENTARY_DESCRIPTION = "description";
 	private final static String DOCUMENTARY_VIDEO_LINK = "videolink";
 	private final static String DOCUMENTARY_RATING = "rating";
+	private final static String DOCUMENTARY_COMMENT = "comment";
+	private final static String DOCUMENTARY_COMMENTS = "comments";
 	private final static String DOCUMENTARIES = "documentaries";
 	private final static String ADD_DOCUMENTARY = "add";
 	private final static String ADD_DOCUMENTARY_INFO = "add_info";
+	private final static String ADD_DOCUMENTARY_COMMENT = "/documentary/add_comment/{title}";
 	private final static String REMOVE_DOCUMENTARY = "remove";
 	private final static String MESSAGE = "message";
 	private final static String IMAGE_FOLDER = "/resources/images/";
@@ -93,8 +98,8 @@ public class DocumentaryBrowserController {
 	@RequestMapping(value = ADD_DOCUMENTARY_INFO, method = RequestMethod.POST)
 	public String postDocumentaryInfo(Model model,
 			@Valid @ModelAttribute(DOCUMENTARY_INFO) DocumentaryInfo docInfo,
-			@RequestParam(value = "image", required = true) MultipartFile file,
-			final BindingResult result) {
+			final BindingResult result,
+			@RequestParam(value = "image", required = true) MultipartFile file) {
 
 		documentaryValidator.validate(file, result);
 		if (result.hasErrors()) {
@@ -120,6 +125,22 @@ public class DocumentaryBrowserController {
 		log.info("saving documentary info: " + docInfo.getTitle());
 		manager.saveOrUpdateDocumentaryInfo(docInfo);
 		return HOME_PAGE_REDIRECT;
+	}
+
+	@RequestMapping(value = ADD_DOCUMENTARY_COMMENT, method = RequestMethod.POST)
+	public String postDocumentaryComment(Model model,
+			@Valid @ModelAttribute(DOCUMENTARY_COMMENT) Comment comment,
+			final BindingResult result, @PathVariable String title) {
+
+		if (result.hasErrors()) {
+			return sendErrorMessage(result.getFieldError().getDefaultMessage(),
+					model);
+		}
+
+		log.info("Adding new comment with id: " + comment.getId());
+		manager.addComment(comment, title);
+
+		return DOCUMENTARY_REDIRECT + title;
 	}
 
 	@RequestMapping(value = REMOVE_DOCUMENTARY, method = RequestMethod.POST)
@@ -156,6 +177,8 @@ public class DocumentaryBrowserController {
 		model.addAttribute(DOCUMENTARY_DESCRIPTION, docInfo.getDescription());
 		model.addAttribute(DOCUMENTARY_VIDEO_LINK, docInfo.getVideoLink());
 		model.addAttribute(DOCUMENTARY_RATING, docInfo.getRating());
+		model.addAttribute(DOCUMENTARY_COMMENT, new Comment());
+		model.addAttribute(DOCUMENTARY_COMMENTS, docInfo.getComments());
 		return DOCUMENTARY;
 	}
 
