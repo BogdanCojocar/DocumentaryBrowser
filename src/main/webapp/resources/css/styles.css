@@ -1,0 +1,145 @@
+body {
+	background-color: #E6E6E6;
+	text-align: center;
+}
+
+#container {
+	margin: 0px auto;
+	text-align: center;
+	width: 500px;
+	padding: 15px;
+	border: 1px solid #333;
+	background-color: #eee;
+}
+
+table.list {
+	font-family: verdana, arial, sans-serif;
+	font-size: 18px;
+	color: #333333;
+	border-width: 1.5px;
+	border-color: #999999;
+	border-collapse: collapse;
+	padding: 5px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table.list th {
+	background: #b5cfd2;
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #999999;
+}
+
+table.list td {
+	background: #dcddc0;
+	border-width: 1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: #999999;
+}
+
+table.comment {
+	font-family: verdana, arial, sans-serif;
+	font-size: 14px;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #999999;
+	padding: 2px;
+	background: #dcddc0;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+table.comment td {
+	max-width: 350px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+tr.header {
+	height: 25px;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: #b5cfd2;
+}
+
+tr.text {
+	height: 100px;
+	vertical-align: text-top;
+}
+
+#submit {
+	padding: 3px;
+	background: #66C1E4;
+	border: 2px;
+	color: #FFF;
+	box-shadow: 1px 1px 1px #4C6E91;
+	-webkit-box-shadow: 1px 1px 1px #4C6E91;
+	-moz-box-shadow: 1px 1px 1px #4C6E91;
+	text-shadow: 1px 1px 1px #5079A3;
+}
+
+#submit:hover {
+	background: #000066;
+}
+
+form {
+	border-width: 1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: #999999;
+	border-collapse: collapse;
+	width: 350px;
+	background: #dcddc0;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+input[type="text"], textarea {
+	background-color: #b5cfd2;
+	width: 250px;
+	border-radius: 6px;
+}
+
+a:hover, a:visited, a:link, a:active {
+	text-decoration: none;
+}
+
+.list a:link {
+	color: #66C1E4;
+}
+
+.list a:hover, a:visited {
+	color: #336699;
+}
+
+.blank_row {
+	height: 5px;
+	background-color: #b5cfd2;
+}
+
+h2.title {
+	text-decoration: underline;
+}
+
+img.doc {
+	width: 150px;
+	height: 150px;
+	border-style: solid;
+	border-color: #999999;
+	float: left;
+	margin: 0px 15px 15px 0px;
+}
+
+br.big_space {
+	line-height: 20px;
+}
+
+#floated {
+	float: left;
+	text-align: left;
+}
+
+}
