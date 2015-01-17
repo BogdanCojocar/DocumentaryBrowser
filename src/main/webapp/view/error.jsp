@@ -7,20 +7,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Documentaries</title>
-<style>
-h2 {
-	color: red;
-	font-weight: bold;
-}
-</style>
+<link rel="stylesheet" type="text/css"
+	href="${pageContext.request.contextPath}/resources/css/styles.css">
 </head>
 <body>
-	<h2>Error!</h2>
-	<h2>${message}</h2>
-	<form:form method="GET" action="index">
+	<form:form method="GET" action="${pageContext.request.contextPath}/">
 		<table>
 			<tr>
-				<td><input type="submit" value="Back" /></td>
+				<td><h2 class="error">Error!</h2></td>
+			</tr>
+			<tr>
+				<td><h2 class="error">${message}</h2></td>
+			</tr>
+			<tr>
+				<td><input type="submit" value="back" /></td>
 			</tr>
 		</table>
 	</form:form>

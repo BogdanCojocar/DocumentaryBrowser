@@ -7,6 +7,10 @@
 <title>Documentaries</title>
 <link rel="stylesheet" type="text/css"
 	href="${pageContext.request.contextPath}/resources/css/styles.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/ajax.js"></script>
+
 </head>
 <body>
 	<div id="container">
@@ -31,7 +35,9 @@
 
 		<h3>Add a new documentary</h3>
 
-		<form:form method="post" action="add" modelAttribute="documentary">
+		<form:form method="post" id="docPost"
+			action="${pageContext.request.contextPath}/add"
+			modelAttribute="documentary">
 			<table>
 				<tr>
 					<td><form:label path="name">Name: </form:label></td>
@@ -49,7 +55,9 @@
 		</form:form>
 
 		<h3>Remove documentary</h3>
-		<form:form method="post" action="remove" modelAttribute="documentary">
+		<form:form method="post" id="docDelete"
+			action="${pageContext.request.contextPath}/remove"
+			modelAttribute="documentary">
 			<table>
 				<tr>
 					<td><form:label path="id">Id: </form:label></td>

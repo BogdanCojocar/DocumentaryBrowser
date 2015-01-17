@@ -6,10 +6,14 @@ body {
 #container {
 	margin: 0px auto;
 	text-align: center;
-	width: 500px;
+	width: 600px;
 	padding: 15px;
 	border: 1px solid #333;
 	background-color: #eee;
+}
+
+#test {
+	background-color: red;
 }
 
 table.list {
@@ -140,6 +144,11 @@ br.big_space {
 #floated {
 	float: left;
 	text-align: left;
+}
+
+h2.error {
+	color: red;
+	font-weight: bold;
 }
 
 }
