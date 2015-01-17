@@ -11,14 +11,15 @@
 <body>
 	<div id="container">
 		<h2>Add info for documentary ${title}</h2>
-		<form:form method="post" action="add_info"
+		<form:form method="post" action="add_info" class="info"
 			modelAttribute="documentaryInfo" enctype="multipart/form-data">
 			<table>
 				<form:input path="title" type="hidden" value="${title}" />
 				<form:input path="rating" type="hidden" value="10" />
 				<tr>
 					<td style="vertical-align: top"><form:label path="description">Description: </form:label></td>
-					<td><form:textarea cols="60" rows="25" path="description" /></td>
+					<td><form:textarea class="info" cols="60" rows="25"
+							path="description" /></td>
 				</tr>
 				<tr>
 					<td><form:label path="imagePath">Add image: </form:label></td>
@@ -26,7 +27,7 @@
 				</tr>
 				<tr>
 					<td><form:label path="videoLink">Video link: </form:label></td>
-					<td><form:input path="videoLink" /></td>
+					<td><form:input class="info" path="videoLink" /></td>
 				</tr>
 				<tr>
 					<td colspan="2"><input type="submit" id="submit"

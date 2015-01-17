@@ -101,9 +101,28 @@ form {
 	margin-right: auto;
 }
 
+
+form.info {
+	border-width: 1px;
+	padding: 5px;
+	border-style: solid;
+	border-color: #999999;
+	border-collapse: collapse;
+	width: 450px;
+	background: #dcddc0;
+	margin-left: auto;
+	margin-right: auto;
+}
+
 input[type="text"], textarea {
 	background-color: #b5cfd2;
 	width: 250px;
+	border-radius: 6px;
+}
+
+input[type="text"].info, textarea.info {
+	background-color: #b5cfd2;
+	width: 330px;
 	border-radius: 6px;
 }
 
